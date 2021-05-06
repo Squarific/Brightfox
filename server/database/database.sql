@@ -1,10 +1,13 @@
 CREATE TABLE IF NOT EXISTS `plugins` (
-    uuid VARCHAR(36),
+    uuid binary(16),
+    useruuid binary(16),
+
     name VARCHAR(255),
-    useruuid VARCHAR(36),
+    description TEXT,
+
     creation datetime DEFAULT CURRENT_TIMESTAMP,
     updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    description TEXT,
+
     PRIMARY KEY(uuid),
     INDEX(name),
     INDEX(useruuid),
@@ -13,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `plugins` (
 );
 
 CREATE TABLE IF NOT EXISTS `versions` (
-    pluginuuid VARCHAR(36),
+    pluginuuid binary(16),
     major TINYINT UNSIGNED,
     minor TINYINT UNSIGNED,
     patch TINYINT UNSIGNED,
