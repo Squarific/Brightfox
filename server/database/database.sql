@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS `plugins` (
     INDEX(name)
 );
 
-CREATE TABLE IF NOT EXISTS 'versions' (
+CREATE TABLE IF NOT EXISTS `versions` (
     pluginid INT UNSIGNED AUTO_INCREMENT,
     major TINYINT UNSIGNED,
     minor TINYINT UNSIGNED,
     patch TINYINT UNSIGNED,
-    releasenotes description TEXT,
+    releasenotes TEXT,
     creation datetime DEFAULT CURRENT_TIMESTAMP,
     updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX(pluginid),
