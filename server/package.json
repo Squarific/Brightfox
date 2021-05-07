@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-validator": "^6.10.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.2"
   }
 }

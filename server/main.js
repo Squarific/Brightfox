@@ -4,16 +4,17 @@ const app = express()
 var mysql = require('mysql');
 var pool  = mysql.createPool({
   connectionLimit : 10,
-  host            : 'example.org',
-  user            : 'bob',
-  password        : 'secret',
-  database        : 'my_db'
+  host            : 'localhost',
+  user            : 'pluginmods',
+  password        : 'pluginmods',
+  database        : 'pluginmods'
 });
 
 app.use(express.json());
 
-app.use('/plugin', require('./routes/plugin/_')(pool));
+app.use('/plugins', require('./routes/plugins/_')(pool));
 
-app.listen(8765, '0.0.0.0', () => {
-    console.log("Listening...")
+const PORT = 8755;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log("Listening on " + PORT +  "...");
 });
