@@ -11,7 +11,7 @@ const GENERIC_DB_ERROR = {
 
 module.exports = (database) => {
     router.post('/', [
-        body('pluginuuid').isLength({ min: 36, max: 36 }),
+        body('uuid').isLength({ min: 36, max: 36 }),
         body('useruuid').isLength({ min: 36, max: 36 }),
         body('name').isLength({ min: 3, max: 255 }),
         body('description')
@@ -29,8 +29,8 @@ module.exports = (database) => {
             }
 
             return res.status(200).json({
-                uuid: pluginuuid
-             });
+                uuid: uuid
+            });
         });
     });
 
