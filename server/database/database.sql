@@ -1,3 +1,6 @@
+CREATE DATABASE `pluginmods`;
+USE `pluginmods`;
+
 CREATE TABLE IF NOT EXISTS `plugins` (
     uuid binary(16),
     useruuid binary(16),
