@@ -21,8 +21,25 @@ html, body {
     -webkit-transition-property: background-color;
     -moz-transition-property: background-color;
     transition-property: background-color;
-  }
-  
-  .pluginstore-button:hover {
+}
+
+.pluginstore-button:hover {
     background-color: #233445;
-  }
+}
+
+.newPluginForm textarea {
+    width:500px;
+    height:250px;
+}
+
+.newversion-content textarea {
+    width:500px;
+    height:250px;
+}
+
+.error {
+    background:#c86f6f;
+    color:#430505;
+    margin-bottom:1em;
+    padding:0.5em;
+}

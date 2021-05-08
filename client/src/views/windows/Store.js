@@ -22,6 +22,13 @@ SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
 	button.addEventListener("click", function () {
 		this.openPluginList();
 	}.bind(this));
+
+    var button = content.appendChild(document.createElement("div"));
+	button.classList = "pluginstore-button";
+	button.appendChild(document.createTextNode("Add new plugin"));
+	button.addEventListener("click", function () {
+		const newPluginWindow = new NewPluginWindow(this.gui);
+	}.bind(this));
 };
 
 /* Plugin list window */
