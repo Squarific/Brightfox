@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
 var mysql = require('mysql');
 var pool  = mysql.createPool({
@@ -11,6 +12,7 @@ var pool  = mysql.createPool({
 });
 
 app.use(express.json());
+app.use(cors())
 
 app.use('/plugins', require('./routes/plugins/_')(pool));
 
