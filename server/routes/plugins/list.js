@@ -10,7 +10,7 @@ const GENERIC_DB_ERROR = {
 };
 
 module.exports = (database) => {
-    router.post('/', [
+    router.get('/', [
     ], async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
