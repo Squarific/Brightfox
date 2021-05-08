@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(cors())
 
 app.use('/plugins', require('./routes/plugins/_')(pool));
+app.use('/versions', require('./routes/versions/_')(pool));
 
 const PORT = 8755;
 app.listen(PORT, '0.0.0.0', () => {
