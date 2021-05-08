@@ -2,7 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 
-const UPDATE_QUERY = "UPDATE `plugins` SET name = ? AND description = ? WHERE uuid = ? and useruuid = ?";
+const UPDATE_QUERY = "UPDATE `plugins` SET name = ?, description = ? WHERE uuid = UUID_TO_BIN(?) AND useruuid = UUID_TO_BIN(?)";
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"
@@ -29,7 +29,7 @@ module.exports = (database) => {
             }
 
             return res.status(200).json({
-                uuid: uuid
+                msg: "success",
             });
         });
     });
