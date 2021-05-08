@@ -10,5 +10,7 @@ function PluginWindow (gui, pluginData) {
 	var title = content.appendChild(document.createElement("h2"));
 	title.appendChild(document.createTextNode("Plugin " + pluginData.name + " by " + pluginData.useruuid));
 
-    
+    content.appendChild(gui.createButton("Run plugin", () => {
+        
+    }))
 }
