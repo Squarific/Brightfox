@@ -2,6 +2,8 @@ function SitePluginsStore (gui) {
     this.gui = gui;
 }
 
+/* Main menu */
+
 SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
     var pluginStoreWindow = this.gui.createWindow({
         title: "Plugin store",
@@ -22,19 +24,42 @@ SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
 	}.bind(this));
 };
 
+/* Plugin list window */
+
 SitePluginsStore.prototype.openPluginList = function openPluginList () {
-    var pluginStoreWindow = this.gui.createWindow({
+    var pluginListWindow = this.gui.createWindow({
         title: "Plugin list",
         close: true
     })
 
-    var content = pluginStoreWindow.appendChild(document.createElement("div"));
+    var content = pluginListWindow.appendChild(document.createElement("div"));
 	content.classList.add("content");
 	
 	var title = content.appendChild(document.createElement("h2"));
 	title.appendChild(document.createTextNode("Plugin list"));
 
     fetch('http://localhost:8755/plugins/list').then(function (res) { return res.json() }).then(function (data) {
-        console.log(data);
-    });
+        for (var k = 0; k < data.plugins.length; k++) {
+            content.appendChild(new PluginCard(this.gui, data.plugins[k]).toDOM());
+        }
+    }.bind(this));
+};
+
+
+/* 
+    Plugin window
+*/
+
+SitePluginsStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
+    throw new Error("Not implemented");
+
+    fetch('http://localhost:8755/plugins/retrieve').then(function (res) { return res.json() }).then(function (data) {
+        
+    }.bind(this));
+
+    this.openPluginWindowWithData();
+};
+
+SitePluginsStore.prototype.openPluginWindowWithData = function openPluginWindowWithData (pluginData) {
+    const pluginWindow = new PluginWindow(this.gui, pluginData);
 };
