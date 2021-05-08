@@ -39,7 +39,7 @@ function build() {
   if (building !== 0) return console.log("ALREADY BUILDING", building);
   
   console.log("=== Starting a build ===");
-  building = 3;
+  building = 1;
   
 	/* compressor.minify({
 		compressor: "gcc",
