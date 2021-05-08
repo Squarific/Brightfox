@@ -1,9 +1,12 @@
-let _ = require("lodash");
-let fs = require("fs");
-let path = require("path");
-let compressor = require("node-minify");
-let mustache = require("mustache")
-let exec = require("child_process").execSync;
+
+const _ = require("lodash");
+const fs = require("fs");
+const path = require("path");
+const compressor = require("node-minify");
+const minify = require("@node-minify/core")
+const uglifyES = require("@node-minify/uglify-es")
+const mustache = require("mustache")
+const exec = require("child_process").execSync;
 const chokidar = require('chokidar');
 
 var lastBuild = Date.now();
@@ -14,71 +17,73 @@ if (process.argv[2] == "repeat") {
 		// with a lot of text editors even with a single save
 		if (Date.now() - lastBuild > 5000) build();
 	});*/
-  
-  /*chokidar.watch('src').on('all', (event, path) => {
-    //console.log("Files changed");
-    if (Date.now() - lastBuild > 2000) {
-      console.log("Files changed");
-      build();
-    }
-    //else console.log("...but too quickly after the previous one.");
-  });*/
-  
-  setInterval(function () {
-    if (Date.now() - lastBuild > 2000) {
-      build();
-    }
-  }, 10000);
+
+	/*chokidar.watch('src').on('all', (event, path) => {
+	  //console.log("Files changed");
+	  if (Date.now() - lastBuild > 2000) {
+		console.log("Files changed");
+		build();
+	  }
+	  //else console.log("...but too quickly after the previous one.");
+	});*/
+
+	setInterval(function () {
+		if (Date.now() - lastBuild > 2000) {
+			build();
+		}
+	}, 10000);
 
 }
 
 build();
 
 function build() {
-  lastBuild = Date.now();
-  if (building !== 0) return console.log("ALREADY BUILDING", building);
-  
-  console.log("=== Starting a build ===");
-  building = 1;
-  
+	lastBuild = Date.now();
+	if (building !== 0) return console.log("ALREADY BUILDING", building);
+
+	console.log("=== Starting a build ===");
+	building = 1;
+
 	/* compressor.minify({
 		compressor: "gcc",
 		input: "src/scripts/** /*.js", <--- remove space before /
 		output: "dist/anondraw.min.js",
 		//options: [ "--language_in=ES5" ],
-    options: {
-      languageIn: "ES5",
-      warningLevel: "QUIET",
-      //compilationLevel: "WHITESPACE_ONLY"
-    },
+	options: {
+	  languageIn: "ES5",
+	  warningLevel: "QUIET",
+	  //compilationLevel: "WHITESPACE_ONLY"
+	},
 		callback: function(err, min) {
 			if (err) {
 				console.log("[ERROR] Rebuilding scripts failed", err);
 				return;
 			}
 			console.log("Scripts rebuilt.");
-      building--;
+	  building--;
 		}
 	});*/
-  
-  compressor.minify({
-		compressor: "uglifyjs",
+
+	minify({
+		compressor: uglifyES,
 		input: "src/**/*.js",
 		output: "demo/SitePlugins.min.js",
-    options: {
-      
-    },
-		callback: function(err, min) {
+		options: {
+			warnings: true, // pass true to display compressor warnings.
+			mangle: false, // pass false to skip mangling names.
+			compress: false // pass false to skip compressing entirely. Pass an object to specify custom compressor options.
+		},
+		callback: function (err, min) {
 			if (err) {
 				console.log("[ERROR] Rebuilding scripts failed", err);
 				return;
 			}
 			console.log("Scripts rebuilt.");
-      building--;
+			building--;
 		}
-  });
-  
-  console.log("Submitted script rebuilding job");
+	});
+
+	console.log("Submitted script rebuilding job");
 
 	/*compressor.minify({
 		compressor: "yui-css",
@@ -90,9 +95,9 @@ function build() {
 				return;
 			}
 			console.log("Styles rebuilt.");
-      building--;
+	  building--;
 		}
 	});*/
-  
-  console.log("Submitted style rebuilding job");
+
+	console.log("Submitted style rebuilding job");
 }
