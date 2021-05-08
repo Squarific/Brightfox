@@ -3,12 +3,13 @@ const app = express()
 const cors = require('cors')
 
 var mysql = require('mysql');
-var pool  = mysql.createPool({
-  connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'pluginmods',
-  password        : 'pluginmods',
-  database        : 'pluginmods'
+var pool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'pluginmods',
+  password: 'pluginmods',
+  database: 'pluginmods',
+  multipleStatements: true
 });
 
 app.use(express.json());
@@ -18,5 +19,5 @@ app.use('/plugins', require('./routes/plugins/_')(pool));
 
 const PORT = 8755;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log("Listening on " + PORT +  "...");
+  console.log("Listening on " + PORT + "...");
 });
