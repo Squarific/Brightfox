@@ -1,9 +1,32 @@
 const router = require('express').Router({ mergeParams: true });
-//const { body } = require('express-validator');
+const { body, validationResult } = require('express-validator');
+const { v4: uuidv4 } = require('uuid');
 
-module.exports = () => {
-    router.get('/', async () => {
-        console.log("it works");
+const SELECT_QUERY = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins`";
+const GENERIC_DB_ERROR = {
+    errors: [{
+        msg: "Internal database error"
+    }]
+};
+
+module.exports = (database) => {
+    router.post('/', [
+    ], async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        database.query(SELECT_QUERY, (err, result) => {
+            if (err) {
+                console.log("Retrieve plugin database error", err);
+                return res.status(504).json(GENERIC_DB_ERROR);
+            }
+
+            return res.status(200).json({
+                plugins: result
+            });
+        });
     });
 
     return router;
