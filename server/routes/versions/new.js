@@ -20,7 +20,7 @@ module.exports = (database) => {
         param('pluginuuid').isLength({ min: 36, max: 36 }),
         body('releasenotes'),
         body('source'),
-        check('version')
+        body('version')
     ], async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
