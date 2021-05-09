@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `plugins` (
     name VARCHAR(255),
     description TEXT,
 
-    verified BOOLEAN DEFAULT FALSE;
+    verified BOOLEAN DEFAULT FALSE,
 
     creation datetime DEFAULT CURRENT_TIMESTAMP,
     updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `plugins` (
     INDEX(useruuid),
     INDEX(verified),
     INDEX(creation),
-    INDEX(updatedatetime),
+    INDEX(updatedatetime)
 );
 
 CREATE TABLE IF NOT EXISTS `versions` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `versions` (
     releasenotes TEXT,
     source TEXT,
 
-    verified BOOLEAN DEFAULT FALSE;
+    verified BOOLEAN DEFAULT FALSE,
 
     creation datetime DEFAULT CURRENT_TIMESTAMP,
     updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -39,6 +39,6 @@ CREATE TABLE IF NOT EXISTS `versions` (
     INDEX(pluginuuid),
     INDEX(updatedatetime),
     INDEX(major, minor, patch),
-    INDEX(verified)
+    INDEX(verified),
     INDEX(creation)
 );
