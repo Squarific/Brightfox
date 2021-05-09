@@ -25,10 +25,10 @@ function NewVersionWindow (gui, pluginData) {
     this._versionSelectionInput = content.appendChild(this._gui.createSelection(["major change", "minor change", "bugfix"], 1));
     content.appendChild(document.createElement("br"));
 
-    var patchNotesTitle = content.appendChild(document.createElement("h4"));
-    patchNotesTitle.appendChild(document.createTextNode("Patch notes"));
-    this._patchNotesInput = content.appendChild(document.createElement("textarea"));
-    this._patchNotesInput.classList.add("patchnotes");
+    var releaseNotesTitle = content.appendChild(document.createElement("h4"));
+    releaseNotesTitle.appendChild(document.createTextNode("Release notes"));
+    this._releaseNotesInput = content.appendChild(document.createElement("textarea"));
+    this._releaseNotesInput.classList.add("releasenotes");
     content.appendChild(document.createElement("br"));
 
     content.appendChild(this._createButton("Test plugin", function () {
@@ -65,7 +65,7 @@ NewVersionWindow.prototype._submitData = function _submitData () {
     const data = {
         source: this._sourceInput.value,
         changetype: this._versionSelectionInput,
-        patchnotes: this._patchNotesInput
+        releasenotes: this._releaseNotesInput
     };
 
     fetch('http://localhost:8755/versions/new', {
