@@ -1,11 +1,11 @@
 function SitePluginsStore (gui) {
-    this.gui = gui;
+    this._gui = gui;
 }
 
 /* Main menu */
 
 SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
-    var pluginStoreWindow = this.gui.createWindow({
+    var pluginStoreWindow = this._gui.createWindow({
         title: "Plugin store",
         close: true
     })
@@ -27,14 +27,14 @@ SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
 	button.classList = "pluginstore-button";
 	button.appendChild(document.createTextNode("Add new plugin"));
 	button.addEventListener("click", function () {
-		const newPluginWindow = new NewPluginWindow(this.gui);
+		const newPluginWindow = new NewPluginWindow(this._gui);
 	}.bind(this));
 };
 
 /* Plugin list window */
 
 SitePluginsStore.prototype.openPluginList = function openPluginList () {
-    var pluginListWindow = this.gui.createWindow({
+    var pluginListWindow = this._gui.createWindow({
         title: "Plugin list",
         close: true
     })
@@ -47,7 +47,7 @@ SitePluginsStore.prototype.openPluginList = function openPluginList () {
 
     fetch('http://localhost:8755/plugins/list').then(function (res) { return res.json() }).then(function (data) {
         for (var k = 0; k < data.plugins.length; k++) {
-            content.appendChild(new PluginCard(this.gui, data.plugins[k]).toDOM());
+            content.appendChild(new PluginCard(this._gui, data.plugins[k]).toDOM());
         }
     }.bind(this));
 };
@@ -68,5 +68,5 @@ SitePluginsStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
 };
 
 SitePluginsStore.prototype.openPluginWindowWithData = function openPluginWindowWithData (pluginData) {
-    const pluginWindow = new PluginWindow(this.gui, pluginData);
+    const pluginWindow = new PluginWindow(this._gui, pluginData);
 };

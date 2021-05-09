@@ -1,7 +1,7 @@
 function NewVersionWindow (gui, pluginData) {
-    this.gui = gui;
+    this._gui = gui;
 
-    this._pluginWindow = this.gui.createWindow({
+    this._pluginWindow = this._gui.createWindow({
         title: "Adding a new version for " + pluginData.name,
         close: true
     })
@@ -16,19 +16,19 @@ function NewVersionWindow (gui, pluginData) {
     var helpText = content.appendChild(document.createElement("h3"));
     helpText.appendChild(document.createTextNode("Tip: do not use this to code, but use something like notepad++ and just paste it in here so you don't accidently lose a lot of work"));
 
-    var textarea = content.appendChild(document.createElement("textarea"));
-    textarea.value = this.BASE_MOD;
+    this._sourceInput = content.appendChild(document.createElement("textarea"));
+    this._sourceInput.value = this.BASE_MOD;
 
     content.appendChild(document.createElement("br"));
     content.appendChild(document.createElement("br"));
 
-    var versionSelection = content.appendChild(this.gui.createSelection(["major change", "minor change", "bugfix"], 1));
+    this._versionSelectionInput = content.appendChild(this._gui.createSelection(["major change", "minor change", "bugfix"], 1));
     content.appendChild(document.createElement("br"));
 
     var patchNotesTitle = content.appendChild(document.createElement("h4"));
     patchNotesTitle.appendChild(document.createTextNode("Patch notes"));
-    var patchNotes = content.appendChild(document.createElement("textarea"));
-    patchNotes.classList.add("patchnotes");
+    this._patchNotesInput = content.appendChild(document.createElement("textarea"));
+    this._patchNotesInput.classList.add("patchnotes");
     content.appendChild(document.createElement("br"));
 
     content.appendChild(this._createButton("Test plugin", function () {
@@ -63,11 +63,12 @@ NewVersionWindow.prototype._createForm = function _createForm (content) {
 
 NewVersionWindow.prototype._submitData = function _submitData () {
     const data = {
-        name: this._nameInput.value,
-        desciption: this._descriptionInput.value
+        source: this._sourceInput.value,
+        changetype: this._versionSelectionInput,
+        patchnotes: this._patchNotesInput
     };
 
-    fetch('http://localhost:8755/plugins/new', {
+    fetch('http://localhost:8755/versions/new', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
