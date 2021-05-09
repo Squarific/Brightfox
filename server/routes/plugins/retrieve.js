@@ -1,10 +1,8 @@
 const router = require('express').Router({ mergeParams: true });
 const { param, validationResult } = require('express-validator');
-// const { v4: uuidv4 } = require('uuid');
 
 const SELECT_QUERY_PLUGIN = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins` WHERE uuid = UUID_TO_BIN(?); ";
-// const SELECT_QUERY_VERSIONS = "SELECT BIN_TO_UUID(pluginuuid) as pluginuuid, CONCAT(major,'.',minor,'.',patch) AS version, releasenotes, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?);";
-const SELECT_QUERY_VERSIONS = "SELECT CONCAT(major,'.',minor,'.',patch) AS version, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?);";
+const SELECT_QUERY_VERSIONS = "SELECT CONCAT(major,'.',minor,'.',patch) AS version, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?) ORDER BY major DESC, minor DESC, patch DESC ;";
 const SELECT_QUERY = SELECT_QUERY_PLUGIN + SELECT_QUERY_VERSIONS
 const GENERIC_DB_ERROR = {
     errors: [{

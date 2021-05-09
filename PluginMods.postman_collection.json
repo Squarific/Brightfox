@@ -182,12 +182,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/plugins/update/{{uuid}}",
+							"raw": "{{url}}/versions/update/{{uuid}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"plugins",
+								"versions",
 								"update",
 								"{{uuid}}"
 							]
@@ -203,8 +203,8 @@
 							"script": {
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
-									"if(jsonData.uuid){\r",
-									"    pm.environment.set(\"uuid\", jsonData.uuid);\r",
+									"if(jsonData.newversion){\r",
+									"    pm.environment.set(\"pluginversion\", jsonData.newversion);\r",
 									"}"
 								],
 								"type": "text/javascript"
