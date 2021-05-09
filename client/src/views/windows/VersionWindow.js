@@ -15,7 +15,7 @@ function VersionWindow (gui, pluginData, versionData) {
 	title.appendChild(document.createTextNode("Version v" + this._versionData.version));
 
     var description = content.appendChild(document.createElement("div"));
-	description.appendChild(document.createTextNode(pluginData.releasenotes));
+	description.appendChild(document.createTextNode(this._versiondata.releasenotes));
 
     this._gui.createButton("Run this version", () => {
         this._runVersion();
@@ -23,7 +23,7 @@ function VersionWindow (gui, pluginData, versionData) {
 }
 
 VersionWindow.prototype._runVersion = function _runVersion () {
-    fetch('http://localhost:8755/versions/source/' + this._pluginData.uuid + "/" + this._versionData.version).then(res => res.json).then((data) => {
+    fetch('http://localhost:8755/versions/retrieve/' + this._pluginData.uuid + "/" + this._versionData.version).then(res => res.json).then((data) => {
         eval(data.source);
     });
 };

@@ -25,7 +25,7 @@ PluginWindow.prototype._addVersions = function _addVersions (content) {
 
     fetch('http://localhost:8755/versions/list/' + this._pluginData.uuid).then(function (res) { return res.json() }).then(function (data) {
         for (var k = 0; k < data.versions.length; k++) {
-            content.appendChild(new VersionCard(this._gui, data.versions[k]).toDOM());
+            content.appendChild(new VersionCard(this._gui, this._pluginData, data.versions[k]).toDOM());
         }
     }.bind(this));
 };

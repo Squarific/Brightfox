@@ -17,13 +17,15 @@ function NewVersionWindow (gui, pluginData) {
     var helpText = content.appendChild(document.createElement("h3"));
     helpText.appendChild(document.createTextNode("Tip: do not use this to code, but use something like notepad++ and just paste it in here so you don't accidently lose a lot of work"));
 
+    this._status = content.appendChild(document.createElement("div"));
+
     this._sourceInput = content.appendChild(document.createElement("textarea"));
     this._sourceInput.value = this.BASE_MOD;
 
     content.appendChild(document.createElement("br"));
     content.appendChild(document.createElement("br"));
 
-    this._versionSelectionInput = content.appendChild(this._gui.createSelection(["major change", "minor change", "bugfix"], 1));
+    this._versionSelectionInput = content.appendChild(this._gui.createSelection(["Major change", "Minor change", "Bugfix/patch"], 1));
     content.appendChild(document.createElement("br"));
 
     var releaseNotesTitle = content.appendChild(document.createElement("h4"));
@@ -37,36 +39,16 @@ function NewVersionWindow (gui, pluginData) {
     }.bind(this)));
 
     content.appendChild(this._createButton("Submit plugin", function () {
-        //this.submitMod();
+        this._submitData();
     }.bind(this)));
 }
 
-NewVersionWindow.prototype._createForm = function _createForm (content) {
-    var formContainer = content.appendChild(document.createElement("div"));
-    formContainer.className = "newPluginForm";
-
-    this._status = formContainer.appendChild(document.createElement("div"));
-
-    this._nameInput = formContainer.appendChild(document.createElement("input"));
-    this._nameInput.placeholder = "My cool plugin";
-
-    formContainer.appendChild(document.createElement("br"));
-    formContainer.appendChild(document.createElement("br"));
-
-    this._descriptionInput = formContainer.appendChild(document.createElement("textarea"));
-    this._descriptionInput.placeholder = "A good description of my plugin";
-
-    var button = formContainer.appendChild(document.createElement("div"));
-	button.classList = "pluginstore-button";
-	button.appendChild(document.createTextNode("Create new plugin"));
-	button.addEventListener("click", this._submitData.bind(this));
-};
-
 NewVersionWindow.prototype._submitData = function _submitData () {
+    const CHANGETYPES = ["major", "minor", "patch"];
     const data = {
         source: this._sourceInput.value,
         releasenotes: this._releaseNotesInput.value,
-        changetype: this._versionSelectionInput,
+        changetype: CHANGETYPES[this._versionSelectionInput.selectedIndex]
     };
 
     console.log(this._versionSelectionInput);
@@ -80,8 +62,11 @@ NewVersionWindow.prototype._submitData = function _submitData () {
     })
     .then(response => response.json())
     .then(data => {
-        const newVersionWindow = new NewVersionWindow();
-        this._pluginWindow.parentNode.removeChild(this._pluginWindow);
+        if (data && data.errors) {
+            return this.displayError(data.errors.map(e => { e.msg }).join(", "));
+        }
+
+        this.displaySuccess("New version saved: v" + data.newversion + ". We will now review and if your plugin gets verified other users will be able to open it. For now you can find it in the 'My plugin' window.");
     })
     .catch((error) => {
         this.displayError(error);
@@ -99,7 +84,7 @@ NewVersionWindow.prototype.displaySuccess = function displayError (errorText) {
     while (this._status.firstChild) this._status.removeChild(this._status.firstChild);
 
     this._status.appendChild(document.createTextNode(errorText));
-    this._status.className = "error";
+    this._status.className = "success";
 };
 
 NewVersionWindow.prototype.clearStatus = function displayError (errorText) {

@@ -43,3 +43,10 @@ html, body {
     margin-bottom:1em;
     padding:0.5em;
 }
+
+.success {
+    background:#77c86f;
+    color:#074305;
+    margin-bottom:1em;
+    padding:0.5em;
+}
