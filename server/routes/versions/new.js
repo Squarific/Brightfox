@@ -20,7 +20,7 @@ module.exports = (database) => {
         param('pluginuuid').isLength({ min: 36, max: 36 }),
         body('releasenotes'),
         body('source'),
-        body('version')
+        body('changetype')
     ], async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -36,7 +36,7 @@ module.exports = (database) => {
         })
 
         function newVersion(versionData) {
-            newVersion = updateVersion(versionData, req.body.version)
+            newVersion = updateVersion(versionData, req.body.changetype)
             database.query(INSERT_QUERY, [req.params.pluginuuid, newVersion.major, newVersion.minor, newVersion.patch, req.body.releasenotes, req.body.source], (err, result) => {
                 if (err) {
                     console.log("New plugin database error", err, req.params.pluginuuid);
@@ -48,10 +48,10 @@ module.exports = (database) => {
             });
         }
 
-        function updateVersion(versionData, requestVersion) {
+        function updateVersion(versionData, changetype) {
             // TODO trow error if versions < 255
             let { major, minor, patch } = { ...versionData[0] }
-            switch (requestVersion) {
+            switch (changetype) {
                 case "major":
                     major++
                     minor = 0
