@@ -8,7 +8,7 @@ const SELECT_QUERY_LATEST_VERSION = `
     ORDER BY major DESC, minor DESC, patch DESC 
     LIMIT 1
     ;`;
-const INSERT_QUERY = "INSERT INTO `versions` (pluginuuid, major, minor, patch, releasenotes) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?)";
+const INSERT_QUERY = "INSERT INTO `versions` (pluginuuid, major, minor, patch, releasenotes, source) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?)";
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"
@@ -19,7 +19,8 @@ module.exports = (database) => {
     router.post('/:pluginuuid', [
         param('pluginuuid').isLength({ min: 36, max: 36 }),
         body('releasenotes').isLength({ min: 3, max: 255 }),
-        check('version'),
+        body('source'),
+        check('version')
     ], async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -36,7 +37,7 @@ module.exports = (database) => {
 
         function newVersion(versionData) {
             newVersion = updateVersion(versionData, req.body.version)
-            database.query(INSERT_QUERY, [req.params.pluginuuid, newVersion.major, newVersion.minor, newVersion.patch, req.body.releasenotes], (err, result) => {
+            database.query(INSERT_QUERY, [req.params.pluginuuid, newVersion.major, newVersion.minor, newVersion.patch, req.body.releasenotes, req.body.source], (err, result) => {
                 if (err) {
                     console.log("New plugin database error", err, req.params.pluginuuid);
                     return res.status(504).json(GENERIC_DB_ERROR);

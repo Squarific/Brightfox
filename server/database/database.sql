@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `versions` (
     minor TINYINT UNSIGNED,
     patch TINYINT UNSIGNED,
     releasenotes TEXT,
+    source TEXT,
     creation datetime DEFAULT CURRENT_TIMESTAMP,
     updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX(pluginuuid),

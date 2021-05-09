@@ -216,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"version\":\"patch\",\r\n    \"releasenotes\":\"{{$randomProductName}}\"\r\n}",
+							"raw": "{\r\n    \"version\":\"patch\",\r\n    \"releasenotes\":\"{{$randomProductName}}\",\r\n    \"source\": \"{{$randomLoremParagraph}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
