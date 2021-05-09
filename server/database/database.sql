@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS `versions` (
     INDEX(updatedatetime),
     INDEX(major, minor, patch),
     INDEX(verified),
-    INDEX(creation),
+    INDEX(creation)
 );
