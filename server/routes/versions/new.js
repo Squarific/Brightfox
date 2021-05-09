@@ -1,6 +1,5 @@
 const router = require('express').Router({ mergeParams: true });
-const { body, param, validationResult, check } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
+const { body, param, validationResult } = require('express-validator');
 
 const SELECT_QUERY_LATEST_VERSION = `
     SELECT major, minor, patch from  versions 

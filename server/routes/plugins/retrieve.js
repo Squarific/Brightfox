@@ -1,7 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const { param, validationResult } = require('express-validator');
 
-const SELECT_QUERY_PLUGIN = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins` WHERE uuid = UUID_TO_BIN(?); ";
+const SELECT_QUERY_PLUGIN = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins` WHERE uuid = UUID_TO_BIN(?) AND verified = true; ";
 const SELECT_QUERY_VERSIONS = "SELECT CONCAT(major,'.',minor,'.',patch) AS version, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?) ORDER BY major DESC, minor DESC, patch DESC ;";
 const SELECT_QUERY = SELECT_QUERY_PLUGIN + SELECT_QUERY_VERSIONS
 const GENERIC_DB_ERROR = {

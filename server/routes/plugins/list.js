@@ -1,8 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
-const { body, validationResult } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
+const { validationResult } = require('express-validator');
 
-const SELECT_QUERY = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins`";
+const SELECT_QUERY = "SELECT BIN_TO_UUID(uuid) as uuid, BIN_TO_UUID(useruuid) as useruuid, name, description, creation, updatedatetime from  `plugins` WHERE verified = true";
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"

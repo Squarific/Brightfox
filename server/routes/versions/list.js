@@ -1,8 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const { param, validationResult } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
 
-const SELECT_QUERY = "SELECT CONCAT(major,'.',minor,'.',patch) AS version, releasenotes, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?);";
+const SELECT_QUERY = "SELECT CONCAT(major,'.',minor,'.',patch) AS version, releasenotes, creation, updatedatetime from  `versions` WHERE pluginuuid = UUID_TO_BIN(?) AND verified = true;";
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"
