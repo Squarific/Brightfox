@@ -1,5 +1,6 @@
 function NewVersionWindow (gui, pluginData) {
     this._gui = gui;
+    this._pluginData = pluginData;
 
     this._pluginWindow = this._gui.createWindow({
         title: "Adding a new version for " + pluginData.name,
@@ -64,11 +65,13 @@ NewVersionWindow.prototype._createForm = function _createForm (content) {
 NewVersionWindow.prototype._submitData = function _submitData () {
     const data = {
         source: this._sourceInput.value,
+        releasenotes: this._releaseNotesInput.value,
         changetype: this._versionSelectionInput,
-        releasenotes: this._releaseNotesInput
     };
 
-    fetch('http://localhost:8755/versions/new', {
+    console.log(this._versionSelectionInput);
+
+    fetch('http://localhost:8755/versions/new/' + this._pluginData.uuid, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

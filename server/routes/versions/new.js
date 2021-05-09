@@ -18,7 +18,7 @@ const GENERIC_DB_ERROR = {
 module.exports = (database) => {
     router.post('/:pluginuuid', [
         param('pluginuuid').isLength({ min: 36, max: 36 }),
-        body('releasenotes').isLength({ min: 3, max: 255 }),
+        body('releasenotes'),
         body('source'),
         check('version')
     ], async (req, res) => {
