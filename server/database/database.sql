@@ -30,5 +30,6 @@ CREATE TABLE IF NOT EXISTS `versions` (
     INDEX(pluginuuid),
     INDEX(updatedatetime),
     INDEX(major, minor, patch),
-    INDEX(creation)
+    INDEX(creation),
+    UNIQUE(pluginuuid, major, minor, patch)
 );
