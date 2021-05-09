@@ -34,12 +34,12 @@ CREATE TABLE IF NOT EXISTS `versions` (
     verified BOOLEAN DEFAULT FALSE,
 
     creation datetime DEFAULT CURRENT_TIMESTAMP,
-    updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updatedatetime datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\
 
+    UNIQUE(pluginuuid, major, minor, patch),
     INDEX(pluginuuid),
     INDEX(updatedatetime),
     INDEX(major, minor, patch),
-    UNIQUE(pluginuuid, major, minor, patch),
     INDEX(verified),
-    INDEX(creation)
+    INDEX(creation),
 );
