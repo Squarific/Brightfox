@@ -1,9 +1,15 @@
 const router = require('express').Router({ mergeParams: true });
 const { body, param, validationResult } = require('express-validator');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const privateKey = fs.readFileSync('${ WORKSPACE }jwtsignkey.key');
+
+
+
 
 const SELECT_QUERY_LATEST_VERSION = `
     SELECT major, minor, patch from  versions 
-    WHERE pluginuuid = UUID_TO_BIN(?) 
+    WHERE pluginuuid = UUID_TO_BIN(?) AND useruuid = UUID_TO_BIN(?)
     ORDER BY major DESC, minor DESC, patch DESC 
     LIMIT 1
     ;`;
@@ -19,6 +25,7 @@ module.exports = (database) => {
         param('pluginuuid').isLength({ min: 36, max: 36 }),
         body('releasenotes'),
         body('source'),
+        body('bearer'),
         body('changetype')
     ], async (req, res) => {
         const errors = validationResult(req);
@@ -26,7 +33,14 @@ module.exports = (database) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        database.query(SELECT_QUERY_LATEST_VERSION, [req.params.pluginuuid], (err, result) => {
+        let useruuid
+        try {
+            useruuid = jwt.verify(req.body.bearer, privateKey)
+        } catch (error) {
+            return res.status(401).json({ msg: "jwt decode failed" }); w
+        }
+
+        database.query(SELECT_QUERY_LATEST_VERSION, [req.params.pluginuuid, useruuid.uuid], (err, result) => {
             if (err) {
                 console.log("Find pluginversion database error", err, req.params.pluginuuid);
                 return res.status(504).json(GENERIC_DB_ERROR);

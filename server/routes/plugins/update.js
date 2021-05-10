@@ -1,6 +1,12 @@
 const router = require('express').Router({ mergeParams: true });
 const { body, param, validationResult } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const privateKey = fs.readFileSync('${ WORKSPACE }jwtsignkey.key');
+
+
+
+
 
 const UPDATE_QUERY = "UPDATE `plugins` SET name = ?, description = ? WHERE uuid = UUID_TO_BIN(?) AND useruuid = UUID_TO_BIN(?)";
 const GENERIC_DB_ERROR = {
@@ -15,6 +21,7 @@ module.exports = (database) => {
         body('uuid').isLength({ min: 36, max: 36 }),
         body('useruuid').isLength({ min: 36, max: 36 }),
         body('name').isLength({ min: 3, max: 255 }),
+        body('bearer'),
         body('description')
     ], async (req, res) => {
         const errors = validationResult(req);
@@ -22,10 +29,16 @@ module.exports = (database) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        // TODO userid from jwt token
-        database.query(UPDATE_QUERY, [req.body.name, req.body.description, req.body.uuid, req.body.useruuid], (err, result) => {
+        let useruuid
+        try {
+            useruuid = jwt.verify(req.body.bearer, privateKey)
+        } catch (error) {
+            return res.status(401).json({ msg: "jwt decode failed" }); w
+        }
+
+        database.query(UPDATE_QUERY, [req.body.name, req.body.description, req.body.uuid, useruuid.uuid], (err, result) => {
             if (err) {
-                console.log("Update plugin database error", err, req.body.name, req.body.description, req.body.uuid, req.body.useruuid);
+                console.log("Update plugin database error", err, req.body.name, req.body.description, req.body.uuid, useruuid.uuid);
                 return res.status(504).json(GENERIC_DB_ERROR);
             }
 
