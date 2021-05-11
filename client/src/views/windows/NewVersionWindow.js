@@ -1,13 +1,14 @@
-function NewVersionWindow (gui, pluginData) {
+function NewVersionWindow (gui, network, pluginData) {
     this._gui = gui;
+    this._network = network;
     this._pluginData = pluginData;
 
-    this._pluginWindow = this._gui.createWindow({
+    this._newVersionWindow = this._gui.createWindow({
         title: "Adding a new version for " + pluginData.name,
         close: true
     })
 
-    var content = this._pluginWindow.appendChild(document.createElement("div"));
+    var content = this._newVersionWindow.appendChild(document.createElement("div"));
 	content.classList.add("content");
     content.classList.add("newversion-content");
 	
@@ -51,25 +52,10 @@ NewVersionWindow.prototype._submitData = function _submitData () {
         changetype: CHANGETYPES[this._versionSelectionInput.selectedIndex]
     };
 
-    console.log(this._versionSelectionInput);
+    this._network.newVersion(this._pluginData.uuid, data, (err, newVersion) => {
+        if (err) return this.displayError(err);
 
-    fetch('http://localhost:8755/versions/new/' + this._pluginData.uuid, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.errors) {
-            return this.displayError(data.errors.map(e => { e.msg }).join(", "));
-        }
-
-        this.displaySuccess("New version saved: v" + data.newversion + ". We will now review and if your plugin gets verified other users will be able to open it. For now you can find it in the 'My plugin' window.");
-    })
-    .catch((error) => {
-        this.displayError(error);
+        this.displaySuccess("New version saved: v" + newVersion + ". We will now review and if your plugin gets verified other users will be able to open it. For now you can find it in the 'My plugin' window.");
     });
 };
 

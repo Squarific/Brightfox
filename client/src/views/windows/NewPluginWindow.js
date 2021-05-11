@@ -1,7 +1,8 @@
-function NewPluginWindow (gui) {
-    this.gui = gui;
+function NewPluginWindow (gui, network) {
+    this._gui = gui;
+    this._network = network;
 
-    this._pluginWindow = this.gui.createWindow({
+    this._pluginWindow = this._gui.createWindow({
         title: "New plugin",
         close: true
     })
@@ -37,38 +38,21 @@ NewPluginWindow.prototype._createForm = function _createForm (content) {
 };
 
 NewPluginWindow.prototype._submitData = function _submitData () {
-    const dataToSend = {
+    const newPluginData = {
         name: this._nameInput.value,
-        desciption: this._descriptionInput.value
+        description: this._descriptionInput.value
     };
 
-    fetch('http://localhost:8755/plugins/new', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (!data) {
-            console.log("Data error", data)
-            return this.displayError("Unknown data error.");
-        }
-        
-        if (data.errors) {
-            return this.displayError(data.errors.map(el => el.msg).join("\n"));
-        }
+    this._network.newPlugin(newPluginData, (err, newPlugin) => {
+        if (err) return this.displayError(err);
 
-        const newVersionWindow = new NewVersionWindow(this.gui, {
-            uuid: data.uuid,
-            name: dataToSend.name,
-            description: dataToSend.description
+        const newVersionWindow = new NewVersionWindow(this._gui, this._network, {
+            uuid: newPlugin.uuid,
+            name: newPluginData.name,
+            description: newPluginData.description
         });
+
         this._pluginWindow.parentNode.removeChild(this._pluginWindow);
-    })
-    .catch((error) => {
-        this.displayError(error);
     });
 };
 

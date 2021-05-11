@@ -1,5 +1,6 @@
-function PluginWindow (gui, pluginData) {
+function PluginWindow (gui, network, pluginData) {
     this._gui = gui;
+    this._network = network;
     this._pluginData = pluginData;
 
     var pluginWindow = gui.createWindow({
@@ -23,10 +24,10 @@ PluginWindow.prototype._addVersions = function _addVersions (content) {
     var title = content.appendChild(document.createElement("h3"));
 	title.appendChild(document.createTextNode("Versions"));
 
-    fetch('http://localhost:8755/versions/list/' + this._pluginData.uuid).then(function (res) { return res.json() }).then(function (data) {
-        for (var k = 0; k < data.versions.length; k++) {
-            content.appendChild(new VersionCard(this._gui, this._pluginData, data.versions[k]).toDOM());
+    this._network.getVersions(this._pluginData.uuid, (err, versions) => {
+        for (var k = 0; k < versions.length; k++) {
+            content.appendChild(new VersionCard(this._gui, this._network, this._pluginData, versions[k]).toDOM());
         }
-    }.bind(this));
+    });
 };
 

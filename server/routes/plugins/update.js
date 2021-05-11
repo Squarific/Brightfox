@@ -1,17 +1,22 @@
 const router = require('express').Router({ mergeParams: true });
 const { body, param, validationResult } = require('express-validator');
 const fs = require('fs');
+var path = require('path');
 const jwt = require('jsonwebtoken');
-const privateKey = fs.readFileSync('${ WORKSPACE }jwtsignkey.key');
 
-
-
-
+const privateKeyPath = path.join(__dirname, '..', '..', 'jwtsignkey.key');
+const privateKey = fs.readFileSync(privateKeyPath);
 
 const UPDATE_QUERY = "UPDATE `plugins` SET name = ?, description = ? WHERE uuid = UUID_TO_BIN(?) AND useruuid = UUID_TO_BIN(?)";
 const GENERIC_DB_ERROR = {
     errors: [{
         msg: "Internal database error"
+    }]
+};
+
+const JWT_ERROR = {
+    errors: [{
+        msg: "Jwt decode failed"
     }]
 };
 
@@ -33,7 +38,7 @@ module.exports = (database) => {
         try {
             useruuid = jwt.verify(req.body.bearer, privateKey)
         } catch (error) {
-            return res.status(401).json({ msg: "jwt decode failed" }); w
+            return res.status(401).json(JWT_ERROR);
         }
 
         database.query(UPDATE_QUERY, [req.body.name, req.body.description, req.body.uuid, useruuid.uuid], (err, result) => {

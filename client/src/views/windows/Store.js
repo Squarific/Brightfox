@@ -1,5 +1,6 @@
-function SitePluginsStore (gui) {
+function SitePluginsStore (gui, network) {
     this._gui = gui;
+    this._network = network;
 }
 
 /* Main menu */
@@ -27,14 +28,14 @@ SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
 	button.classList = "pluginstore-button";
 	button.appendChild(document.createTextNode("Add new plugin"));
 	button.addEventListener("click", function () {
-		const newPluginWindow = new NewPluginWindow(this._gui);
+		const newPluginWindow = new NewPluginWindow(this._gui, this._network);
 	}.bind(this));
 
     var button = content.appendChild(document.createElement("div"));
 	button.classList = "pluginstore-button";
 	button.appendChild(document.createTextNode("My plugins"));
 	button.addEventListener("click", function () {
-		const myPluginWindow = new MyPluginWindow(this._gui);
+		const myPluginWindow = new MyPluginsWindow(this._gui, this._network);
 	}.bind(this));
 };
 
@@ -50,13 +51,13 @@ SitePluginsStore.prototype.openPluginList = function openPluginList () {
 	content.classList.add("content");
 	
 	var title = content.appendChild(document.createElement("h2"));
-	title.appendChild(document.createTextNode("Plugin list"));
+	title.appendChild(document.createTextNode("Plugin list (verified only)"));
 
-    fetch('http://localhost:8755/plugins/list').then(function (res) { return res.json() }).then(function (data) {
-        for (var k = 0; k < data.plugins.length; k++) {
-            content.appendChild(new PluginCard(this._gui, data.plugins[k]).toDOM());
+    this._network.getPluginList((err, list) => {
+        for (var k = 0; k < list.length; k++) {
+            content.appendChild(new PluginCard(this._gui, this._network, list[k]).toDOM());
         }
-    }.bind(this));
+    });
 };
 
 
@@ -75,5 +76,5 @@ SitePluginsStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
 };
 
 SitePluginsStore.prototype.openPluginWindowWithData = function openPluginWindowWithData (pluginData) {
-    const pluginWindow = new PluginWindow(this._gui, pluginData);
+    const pluginWindow = new PluginWindow(this._gui, this._network, pluginData);
 };
