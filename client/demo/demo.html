@@ -8,7 +8,7 @@
         <div id="target"></div>
         <script type="text/javascript" src="SitePlugins.min.js"></script>
         <script type="text/javascript">
-            const sitePlugins = new SitePlugins(document.getElementById("target"), {
+            const sitePlugins = new SitePlugins(new Gui(document.getElementById("target")), {
                 url: "http://localhost:8755"
             });
             sitePlugins.openStore();

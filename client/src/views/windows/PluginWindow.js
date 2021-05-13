@@ -17,6 +17,16 @@ function PluginWindow (gui, network, pluginData) {
     var description = content.appendChild(document.createElement("div"));
 	description.appendChild(document.createTextNode(pluginData.description));
 
+    if (pluginData.useruuid === this._network.useruuid) {
+        content.appendChild(this._gui.createButton("Add new version", () => {
+            const newVersionWindow = new NewVersionWindow(this._gui, this._network, {
+                uuid: this._pluginData.uuid,
+                name: this._pluginData.name,
+                description: this._pluginData.description
+            });
+        }));
+    }
+
     this._addVersions(content);
 }
 

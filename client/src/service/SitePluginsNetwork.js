@@ -1,40 +1,55 @@
-function Network (url) {
-    this.url = url;
-    this.JWT;
+function PARSE_JWT_SITEPLUGINSNETWORK (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
 }
 
-Network.prototype.getPluginList = function getPluginList (cb) {
+function SitePluginsNetwork (url) {
+    this.url = url;
+    this._JWT;
+}
+
+SitePluginsNetwork.prototype.setJWT = function setJWT (token) {
+    this._JWT = token;
+    this.useruuid = PARSE_JWT_SITEPLUGINSNETWORK(token).uuid;
+};
+
+SitePluginsNetwork.prototype.getPluginList = function getPluginList (cb) {
     fetch(this.url + '/plugins/list').then(function (res) { return res.json() }).then(function (data) {
         cb(null, data.plugins);
     });
 };
 
-Network.prototype.getVersions = function getVersions (uuid, cb) {
+SitePluginsNetwork.prototype.getVersions = function getVersions (uuid, cb) {
     fetch(this.url + '/versions/list/' + uuid).then(function (res) { return res.json() }).then(function (data) {
         cb(null, data.versions);
     });
 };
 
-Network.prototype.myPlugins = function myPlugins (cb) {
+SitePluginsNetwork.prototype.myPlugins = function myPlugins (cb) {
     fetch(this.url + '/plugins/my-plugins', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.JWT,
+            'Authorization': 'Bearer ' + this._JWT,
         }
     }).then(function (res) { return res.json() }).then(function (data) {
         cb(null, data.plugins);
     });
 };
 
-Network.prototype.getVersion = function getVersion (uuid, version, cb) {
+SitePluginsNetwork.prototype.getVersion = function getVersion (uuid, version, cb) {
     fetch(this.url + '/versions/retrieve/' + uuid + "/" + version).then(res => res.json()).then((data) => {
         cb(data.version);
     });
 };
 
-Network.prototype.newPlugin = function newPlugin (dataToSend, cb) {
-    dataToSend.bearer = this.JWT;
+SitePluginsNetwork.prototype.newPlugin = function newPlugin (dataToSend, cb) {
+    dataToSend.bearer = this._JWT;
     fetch(this.url + '/plugins/new', {
         method: 'POST',
         headers: {
@@ -56,8 +71,8 @@ Network.prototype.newPlugin = function newPlugin (dataToSend, cb) {
     });
 };
 
-Network.prototype.newVersion = function newVersion (uuid, dataToSend, cb) {
-    dataToSend.bearer = this.JWT;
+SitePluginsNetwork.prototype.newVersion = function newVersion (uuid, dataToSend, cb) {
+    dataToSend.bearer = this._JWT;
     fetch(this.url + '/versions/new/' + uuid, {
         method: 'POST',
         headers: {

@@ -26,7 +26,7 @@ function build() {
 
 	minify({
 		compressor: uglifyES,
-		input: ["src/**/*.js", "./libs/**/*js"],
+		input: "src/**/*.js",
 		output: "demo/SitePlugins.min.js",
 		options: {
 			warnings: true, // pass true to display compressor warnings.

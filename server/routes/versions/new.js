@@ -61,8 +61,6 @@ module.exports = (database) => {
                 return res.status(504).json(GENERIC_DB_ERROR);
             }
 
-            console.log(result[0][0].useruuid, useruuid.uuid);
-
             if (!result || !result[0] || !result[0][0] || result[0][0].useruuid != useruuid.uuid) {
                 return res.status(400).json(PLUGIN_NOT_FOUND_ERROR);
             }
