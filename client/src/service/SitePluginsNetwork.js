@@ -1,5 +1,7 @@
 function PARSE_JWT_SITEPLUGINSNETWORK (token) {
+    if (!token || !token.split) return {};
     var base64Url = token.split('.')[1];
+    if (!base64Url.replace) return {};
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -44,7 +46,7 @@ SitePluginsNetwork.prototype.myPlugins = function myPlugins (cb) {
 
 SitePluginsNetwork.prototype.getVersion = function getVersion (uuid, version, cb) {
     fetch(this.url + '/versions/retrieve/' + uuid + "/" + version).then(res => res.json()).then((data) => {
-        cb(data.version);
+        cb(null, data.version);
     });
 };
 
