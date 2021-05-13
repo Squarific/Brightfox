@@ -36,7 +36,7 @@ function NewVersionWindow (gui, network, pluginData) {
     content.appendChild(document.createElement("br"));
 
     content.appendChild(this._createButton("Test plugin", function () {
-        eval(textarea.value);
+        eval(this._sourceInput.value);
     }.bind(this)));
 
     content.appendChild(this._createButton("Submit plugin", function () {
