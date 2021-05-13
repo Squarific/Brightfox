@@ -24,7 +24,7 @@ function VersionWindow (gui, network, pluginData, versionData) {
 }
 
 VersionWindow.prototype._runVersion = function _runVersion () {
-    this._network.getVersion(this._pluginData.uuid, this._versionData.version, (version) => {
+    this._network.getVersion(this._pluginData.uuid, this._versionData.version, (err, version) => {
         eval(version.source);
     });
 };
