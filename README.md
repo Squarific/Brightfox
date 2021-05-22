@@ -1,2 +1,2 @@
 # Brightfox
-Plugins for your website
+User created mods for your webapp
