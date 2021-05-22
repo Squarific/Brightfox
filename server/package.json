@@ -1,7 +1,7 @@
 {
-  "name": "sitepluginsserver",
+  "name": "brightfox-server",
   "version": "0.0.1",
-  "description": "The server that orchestrates the SitePluginStore library",
+  "description": "Server side for brightfox, the user created mods store for the modern webapps.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,4 +1,4 @@
-function PARSE_JWT_SITEPLUGINSNETWORK (token) {
+function PARSE_JWT_BRIGHTFOXNETWORK (token) {
     if (!token || !token.split) return {};
     var base64Url = token.split('.')[1];
     if (!base64Url.replace) return {};
@@ -10,29 +10,29 @@ function PARSE_JWT_SITEPLUGINSNETWORK (token) {
     return JSON.parse(jsonPayload);
 }
 
-function SitePluginsNetwork (url) {
+function BrightfoxNetwork (url) {
     this.url = url;
     this._JWT;
 }
 
-SitePluginsNetwork.prototype.setJWT = function setJWT (token) {
+BrightfoxNetwork.prototype.setJWT = function setJWT (token) {
     this._JWT = token;
-    this.useruuid = PARSE_JWT_SITEPLUGINSNETWORK(token).uuid;
+    this.useruuid = PARSE_JWT_BRIGHTFOXNETWORK(token).uuid;
 };
 
-SitePluginsNetwork.prototype.getPluginList = function getPluginList (cb) {
+BrightfoxNetwork.prototype.getPluginList = function getPluginList (cb) {
     fetch(this.url + '/plugins/list').then(function (res) { return res.json() }).then(function (data) {
         cb(null, data.plugins);
     });
 };
 
-SitePluginsNetwork.prototype.getVersions = function getVersions (uuid, cb) {
+BrightfoxNetwork.prototype.getVersions = function getVersions (uuid, cb) {
     fetch(this.url + '/versions/list/' + uuid).then(function (res) { return res.json() }).then(function (data) {
         cb(null, data.versions);
     });
 };
 
-SitePluginsNetwork.prototype.myPlugins = function myPlugins (cb) {
+BrightfoxNetwork.prototype.myPlugins = function myPlugins (cb) {
     fetch(this.url + '/plugins/my-plugins', {
         method: 'GET',
         headers: {
@@ -44,13 +44,13 @@ SitePluginsNetwork.prototype.myPlugins = function myPlugins (cb) {
     });
 };
 
-SitePluginsNetwork.prototype.getVersion = function getVersion (uuid, version, cb) {
+BrightfoxNetwork.prototype.getVersion = function getVersion (uuid, version, cb) {
     fetch(this.url + '/versions/retrieve/' + uuid + "/" + version).then(res => res.json()).then((data) => {
         cb(null, data.version);
     });
 };
 
-SitePluginsNetwork.prototype.newPlugin = function newPlugin (dataToSend, cb) {
+BrightfoxNetwork.prototype.newPlugin = function newPlugin (dataToSend, cb) {
     dataToSend.bearer = this._JWT;
     fetch(this.url + '/plugins/new', {
         method: 'POST',
@@ -73,7 +73,7 @@ SitePluginsNetwork.prototype.newPlugin = function newPlugin (dataToSend, cb) {
     });
 };
 
-SitePluginsNetwork.prototype.newVersion = function newVersion (uuid, dataToSend, cb) {
+BrightfoxNetwork.prototype.newVersion = function newVersion (uuid, dataToSend, cb) {
     dataToSend.bearer = this._JWT;
     fetch(this.url + '/versions/new/' + uuid, {
         method: 'POST',

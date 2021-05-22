@@ -1,2 +1,2 @@
-# SitePlugins
+# Brightfox
 Plugins for your website

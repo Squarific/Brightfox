@@ -63,14 +63,14 @@ NewVersionWindow.prototype.displayError = function displayError (errorText) {
     while (this._status.firstChild) this._status.removeChild(this._status.firstChild);
 
     this._status.appendChild(document.createTextNode(errorText));
-    this._status.className = "sitepluginserror";
+    this._status.className = "brightfoxerror";
 };
 
 NewVersionWindow.prototype.displaySuccess = function displayError (errorText) {
     while (this._status.firstChild) this._status.removeChild(this._status.firstChild);
 
     this._status.appendChild(document.createTextNode(errorText));
-    this._status.className = "sitepluginssuccess";
+    this._status.className = "brightfoxsuccess";
 };
 
 NewVersionWindow.prototype.clearStatus = function displayError (errorText) {

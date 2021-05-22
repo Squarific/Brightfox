@@ -1,18 +1,18 @@
 <html>
     <head>
-        <title>Siteplugins demo</title>
+        <title>Brightfox demo</title>
         <link rel="stylesheet" href="demo.css" />
         <link rel="stylesheet" href="gui.css" />
     </head>
     <body>
         <div id="target"></div>
-        <script type="text/javascript" src="SitePlugins.min.js"></script>
+        <script type="text/javascript" src="Brightfox.min.js"></script>
         <script type="text/javascript">
-            const sitePlugins = new SitePlugins(new Gui(document.getElementById("target")), {
+            const brightfox = new Brightfox(new Gui(document.getElementById("target")), {
                 url: "http://localhost:8755"
             });
-            sitePlugins.openStore();
-            sitePlugins.setJWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWUwMTkyODItYjI3My0xMWViLWE5YmMtMDI0MmFjMTIwMDAzIiwiaWF0IjoxNjIwNzQ5NTUxfQ.2JqA7TOvj0oLilLHIS-xA1tlKHjftKi6T_oFeVun_6k");
+            brightfox.openStore();
+            brightfox.setJWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWUwMTkyODItYjI3My0xMWViLWE5YmMtMDI0MmFjMTIwMDAzIiwiaWF0IjoxNjIwNzQ5NTUxfQ.2JqA7TOvj0oLilLHIS-xA1tlKHjftKi6T_oFeVun_6k");
         </script>
     </body>
 </html>

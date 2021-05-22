@@ -27,7 +27,7 @@ function build() {
 	minify({
 		compressor: uglifyES,
 		input: "src/**/*.js",
-		output: "demo/SitePlugins.min.js",
+		output: "demo/Brightfox.min.js",
 		options: {
 			warnings: true, // pass true to display compressor warnings.
 			mangle: false, // pass false to skip mangling names.

@@ -1,11 +1,11 @@
-function SitePluginsStore (gui, network) {
+function BrightfoxStore (gui, network) {
     this._gui = gui;
     this._network = network;
 }
 
 /* Main menu */
 
-SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
+BrightfoxStore.prototype.openMainMenu = function openMainMenu () {
     var pluginStoreWindow = this._gui.createWindow({
         title: "Plugin store",
         close: true
@@ -41,7 +41,7 @@ SitePluginsStore.prototype.openMainMenu = function openMainMenu () {
 
 /* Plugin list window */
 
-SitePluginsStore.prototype.openPluginList = function openPluginList () {
+BrightfoxStore.prototype.openPluginList = function openPluginList () {
     var pluginListWindow = this._gui.createWindow({
         title: "Plugin list",
         close: true
@@ -65,7 +65,7 @@ SitePluginsStore.prototype.openPluginList = function openPluginList () {
     Plugin window
 */
 
-SitePluginsStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
+BrightfoxStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
     throw new Error("Not implemented");
 
     fetch('http://localhost:8755/plugins/retrieve').then(function (res) { return res.json() }).then(function (data) {
@@ -75,6 +75,6 @@ SitePluginsStore.prototype.openPluginWindow = function openPluginWindow (uuid) {
     this.openPluginWindowWithData();
 };
 
-SitePluginsStore.prototype.openPluginWindowWithData = function openPluginWindowWithData (pluginData) {
+BrightfoxStore.prototype.openPluginWindowWithData = function openPluginWindowWithData (pluginData) {
     const pluginWindow = new PluginWindow(this._gui, this._network, pluginData);
 };
