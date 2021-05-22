@@ -1,0 +1,6 @@
+[submodule "Brightfox-server"]
+	path = server
+	url = https://github.com/Squarific/Brightfox-server
+[submodule "Brightfox-client"]
+	path = client
+	url = https://github.com/Squarific/Brightfox-client
